@@ -77,8 +77,7 @@ class RandCard:
 
 
 class Card:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
         k = []
         for v in range(1, 100):
             g = random.randint(1, 91)
@@ -121,31 +120,35 @@ class Card:
                             i.remove(j)
         return self.m
 
+
+class UpdateCard:
+    def __init__(self, card, name):
+        self.card = card
+        self.name = name
+
     def view(self):
         # выведем получившуюся матрицу чисел
         print '{y:-^30}'.format(y=self.name)
-        for i in self.struct:
+        for i in self.card:
             for j in i:
                 print '{}'.format(j),
             print
         print '{:-^24}'.format('-')
 
-    def find_lot(self):
-        if Lot.choice_lot in self.struct:
-            return 'Yes'
-        else:
-            return 'NO'
+    def find_lot(self, ch):
+        for i in self.card:
+            for j in i:
+                if j == ch:
+                    print 'YES'
 
-    def delete_choise(self):
-        if nnn.choice_lot in self.struct:
-            self.m.remove(nnn.choice_lot)
+    def delete_choise(self, ch):
+        for i in self.card:
+            for j in i:
+                if j == ch:
+                    i.insert(i.index(ch), ' ')
+                    i.remove(ch)
 
-    def winner(self):
-        if not self.struct:
-            print 'Поздравляем с победой'
 
-
-# Создадим класс для выбора бочонка
 class Lot:
     def __init__(self):
         self.boch = [_ for _ in xrange(1, 91)]
@@ -159,35 +162,28 @@ class Lot:
         return 'Выпал бочонок: {}'.format(self.choice_lot)
 
 
-# Надо создать класс для поиска бочонка в карточке.
+n = Card()
+human = UpdateCard(n.struct, 'Игрок')
 
-human = Card(' Игрок 1 ')
-human.view()
-
-computer = Card(' Компьютер ')
-computer.view()
-
-nnn = Lot()
-print nnn.choice_lot
-
-# создадим программу раздачи лоточков
-while human.struct or computer.struct:
-    nnn = Lot()
+while True:
+    human.view()
+    nn = Lot()
+    l = nn.choice_lot
+    print 'Выпал бочонок номер: ', l
     r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода и игры нажмите (E):  ')
     if r_human == 'Y':
-        print Lot().choice_lot
+        continue
     elif r_human == 'N':
-        # не работает метод delete
-        human.delete_choise()
-        human.view()
+        print 'Зачеркиваем бочонок номер: ', l
+        human.delete_choise(int(l))
     elif r_human == 'E':
         break
     else:
         print 'Выберите Y или N'
 
 # после выхода из цикла проверяем победителя, им окажется тот у кого нет цифр в карточке
-if not human.struct:
-    print human.winner()
-else:
-    print computer.winner()
+#if not human.struct:
+#    print human.winner()
+#else:
+ #   print computer.winner()
 
