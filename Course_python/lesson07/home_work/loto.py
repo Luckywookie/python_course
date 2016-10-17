@@ -152,7 +152,11 @@ class Lot:
 
     @property
     def choice_lot(self):
-        return 'Выпал бочонок: {}'.format(random.choice(self.boch))
+        return random.choice(self.boch)
+
+    @property
+    def view_lot(self):
+        return 'Выпал бочонок: {}'.format(self.choice_lot)
 
 
 # Надо создать класс для поиска бочонка в карточке.
