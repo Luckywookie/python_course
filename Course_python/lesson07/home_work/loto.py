@@ -135,12 +135,14 @@ class UpdateCard:
             print
         print '{:-^24}'.format('-')
 
+    # метод поиска цифр на карточке
     def find_lot(self, ch):
         for i in self.card:
             for j in i:
                 if j == ch:
-                    print 'YES'
+                    return True
 
+    # метод зачеркивания цифр на карточке
     def delete_choise(self, ch):
         for i in self.card:
             for j in i:
@@ -149,6 +151,7 @@ class UpdateCard:
                     i.remove(ch)
 
 
+# Создадим класс Бочонок
 class Lot:
     def __init__(self):
         self.boch = [_ for _ in xrange(1, 91)]
@@ -165,25 +168,38 @@ class Lot:
 n = Card()
 human = UpdateCard(n.struct, 'Игрок')
 
+m = Card()
+computer = UpdateCard(m.struct, 'Компьютер')
+
 while True:
     human.view()
+    computer.view()
     nn = Lot()
     l = nn.choice_lot
     print 'Выпал бочонок номер: ', l
     r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода и игры нажмите (E):  ')
     if r_human == 'Y':
+        if human.find_lot(int(l)):
+            print 'Вы проиграли'
+            break
+        else:
+            computer.delete_choise(int(l))
         continue
     elif r_human == 'N':
         print 'Зачеркиваем бочонок номер: ', l
-        human.delete_choise(int(l))
+        if human.find_lot(int(l)):
+            human.delete_choise(int(l))
+        else:
+            print 'Вы проиграли'
+            break
     elif r_human == 'E':
         break
     else:
         print 'Выберите Y или N'
+else:
+    if human.find_lot(' '):
+        print 'Поздравляем с победой'
+    else:
+        print 'что-то пошло не так или Вы вышли из игры'
 
-# после выхода из цикла проверяем победителя, им окажется тот у кого нет цифр в карточке
-#if not human.struct:
-#    print human.winner()
-#else:
- #   print computer.winner()
 
