@@ -1,0 +1,44 @@
+def ffcd():
+    while True:
+        f = raw_input('======  Выберите действие:  ======\n'
+                      '1 -- перейти в папку\n'
+                      '2 -- посмотреть содержимое текущей папки\n'
+                      '3 -- удалить папку\n'
+                      '4 -- создать папку\n'
+                      '0 -- выйти из программы\n')
+        if f == '0':
+            print 'Вы вышли из программы'
+            break
+        else:
+            if f == '1':
+                name = raw_input('Введите имя папки \n')
+                try:
+                    os.chdir(name)
+                    print 'Вы успешно перешли в директорию: ', os.getcwd()
+                except OSError:
+                    print('Такой директории не существует')
+
+            elif f == '2':
+                try:
+                    print 'В текущей директории находятся: \n', os.listdir(os.getcwd())
+                except OSError:
+                    print('Такой директории не существует')
+
+            elif f == '3':
+                name = raw_input('Введите имя папки \n')
+                try:
+                    os.rmdir(name)
+                    print 'Вы успешно удалили папку: ', name
+                except OSError:
+                    print('Такой директории не существует')
+
+            elif f == '4':
+                name = raw_input('Введите имя папки \n')
+                try:
+                    os.mkdir(name)
+                    print 'Вы успешно создали папку: ', name
+                except OSError:
+                    print('Такая директория уже существует')
+
+            else:
+                print 'Введите цифру 0, чтобы выйти из программы'
