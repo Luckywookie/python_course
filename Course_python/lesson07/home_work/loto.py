@@ -59,23 +59,9 @@
 
 """
 import random
+
+
 # Создадим класс карточки (массив 3х9)
-
-'''
-class RandCard:
-    def __init__(self):
-        k = []
-        for v in range(1, 100):
-            g = random.randint(1, 91)
-            # если в списке уже присутствует это значение, то перевести опять в начало цикла
-            if g in k:
-                continue
-            else:
-                k.append(g)
-        self.lst_k = k
-'''
-
-
 class Card:
     def __init__(self):
         k = []
@@ -150,6 +136,12 @@ class UpdateCard:
                     i.insert(i.index(ch), ' ')
                     i.remove(ch)
 
+    # метод является ли карточка пустая
+    def clean_card(self):
+        for i in self.card:
+            if all(i) == ' ':
+                return True
+
 
 # Создадим класс Бочонок
 class Lot:
@@ -197,7 +189,7 @@ while True:
     else:
         print 'Выберите Y или N'
 else:
-    if human.find_lot(' '):
+    if human.clean_card():
         print 'Поздравляем с победой'
     else:
         print 'что-то пошло не так или Вы вышли из игры'
