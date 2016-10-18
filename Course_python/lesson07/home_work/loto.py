@@ -62,11 +62,12 @@ import random
 
 
 # Создадим класс карточки (массив 3х9)
+# Не стабильно по 5 цифр получается
 class Card:
     def __init__(self):
         k = []
         for v in range(1, 100):
-            g = random.randint(1, 91)
+            g = random.randint(1, 90)
             # если в списке уже присутствует это значение, то перевести опять в начало цикла
             if g in k:
                 continue
@@ -91,11 +92,13 @@ class Card:
             # создадим список уникальных рандомных чисел, которые будем выкидывать из карточек
             for s in xrange(1, 5):
                 # используем рандомный выбор чисел из списков
+                # видимо он иногда повторяется, поэтому выкидывается меньшее количество чисел из карточки
                 r = random.choice(i)
                 if r in new:
                     continue
                 else:
                     new.append(r)
+
             # далее в каждой строчке выбросим все значения из списка рандомных чисел,
             # заменив их на пробел
             for j in i:
@@ -104,6 +107,7 @@ class Card:
                         if k == j:
                             i.insert(i.index(k), ' ')
                             i.remove(j)
+        print 'список', new
         return self.m
 
 
@@ -137,6 +141,7 @@ class UpdateCard:
                     i.remove(ch)
 
     # метод является ли карточка пустая
+    # необходимо проверить работает ли метод
     def clean_card(self):
         for i in self.card:
             if all(i) == ' ':
@@ -150,7 +155,10 @@ class Lot:
 
     @property
     def choice_lot(self):
-        return random.choice(self.boch)
+        ra = random.choice(self.boch)
+#        self.boch.remove(ra) - если делать не повторяемые бочонки то компьютер никогда не выиграет,
+        # если цифры на карточках повторяются
+        return ra
 
     @property
     def view_lot(self):
@@ -169,18 +177,24 @@ while True:
     nn = Lot()
     l = nn.choice_lot
     print 'Выпал бочонок номер: ', l
-    r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода и игры нажмите (E):  ')
+    r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода из игры нажмите (E):  ')
     if r_human == 'Y':
         if human.find_lot(int(l)):
             print 'Вы проиграли'
             break
         else:
-            computer.delete_choise(int(l))
+            if computer.clean_card():
+                break
+            else:
+                computer.delete_choise(int(l))
         continue
     elif r_human == 'N':
         print 'Зачеркиваем бочонок номер: ', l
         if human.find_lot(int(l)):
             human.delete_choise(int(l))
+            if human.clean_card():
+                print 'Поздравляем с победой'
+                break
         else:
             print 'Вы проиграли'
             break
