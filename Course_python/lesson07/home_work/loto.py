@@ -141,7 +141,7 @@ class UpdateCard:
                     i.remove(ch)
 
     # метод является ли карточка пустая
-    # необходимо проверить работает ли метод
+    # не смогла проверить работает ли метод
     def clean_card(self):
         for i in self.card:
             if all(i) == ' ':
