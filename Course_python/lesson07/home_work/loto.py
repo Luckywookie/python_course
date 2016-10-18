@@ -147,7 +147,7 @@ class UpdateCard:
     # не смогла проверить работает ли метод
     def clean_card(self):
         for i in self.card:
-            if all(i) == ' ':
+            if all(number == ' ' for number in i):
                 return True
 
 
@@ -190,6 +190,7 @@ while nn.boch:
             break
         else:
             if computer.clean_card():
+                print 'Карточка соперника пуста'
                 break
         continue
     elif r_human == 'N':
