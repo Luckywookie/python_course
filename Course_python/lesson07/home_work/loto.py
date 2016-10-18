@@ -60,9 +60,12 @@
 """
 import random
 
+__author__ = 'belykh_olga'
+
 
 # Создадим класс карточки (массив 3х9)
-# Не стабильно по 5 цифр получается
+# SOS!!! Не стабильно по 5 цифр получается
+# Как будто он затирает и ищет в затертых уже. Пробовала вынести в отдельный класс и наследовать, тоже самое получилось
 class Card:
     def __init__(self):
         k = []
@@ -107,7 +110,7 @@ class Card:
                         if k == j:
                             i.insert(i.index(k), ' ')
                             i.remove(j)
-        print 'список', new
+#        print 'список', new
         return self.m
 
 
@@ -155,14 +158,14 @@ class Lot:
 
     @property
     def choice_lot(self):
-        ra = random.choice(self.boch)
-#        self.boch.remove(ra) - если делать не повторяемые бочонки то компьютер никогда не выиграет,
-        # если цифры на карточках повторяются
-        return ra
+        return random.choice(self.boch)
+
+    def remove_lot(self, x):
+        return self.boch.remove(x)
 
     @property
     def view_lot(self):
-        return 'Выпал бочонок: {}'.format(self.choice_lot)
+        return self.boch
 
 
 n = Card()
@@ -171,25 +174,27 @@ human = UpdateCard(n.struct, 'Игрок')
 m = Card()
 computer = UpdateCard(m.struct, 'Компьютер')
 
-while True:
+nn = Lot()
+while nn.boch:
     human.view()
     computer.view()
-    nn = Lot()
     l = nn.choice_lot
+    nn.remove_lot(l)
     print 'Выпал бочонок номер: ', l
+#    print nn.view_lot
     r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода из игры нажмите (E):  ')
     if r_human == 'Y':
+        computer.delete_choise(int(l))
         if human.find_lot(int(l)):
             print 'Вы проиграли'
             break
         else:
             if computer.clean_card():
                 break
-            else:
-                computer.delete_choise(int(l))
         continue
     elif r_human == 'N':
         print 'Зачеркиваем бочонок номер: ', l
+        computer.delete_choise(int(l))
         if human.find_lot(int(l)):
             human.delete_choise(int(l))
             if human.clean_card():
