@@ -66,7 +66,10 @@ __author__ = 'belykh_olga'
 # Создадим класс карточки (массив 3х9)
 # SOS!!! Не стабильно по 5 цифр получается
 # Как будто он затирает и ищет в затертых уже. Пробовала вынести в отдельный класс и наследовать, тоже самое получилось
-class Card:
+# Необходимо сделать наоборот, сначала цифры 5*3 и добавить пробелы
+
+
+class CardNewBase:
     def __init__(self):
         k = []
         for v in range(1, 100):
@@ -78,9 +81,9 @@ class Card:
                 k.append(g)
         # так как в каждой из трех строк не должны повторять значения, создадим сначала единый список
         # а потом разъединим его на три части по 9 штук
-        h1 = k[:9]
-        h2 = k[9:18]
-        h3 = k[18:27]
+        h1 = k[:5]
+        h2 = k[5:10]
+        h3 = k[10:15]
         # отсортируем по возрастанию
         h1.sort()
         h2.sort()
@@ -89,28 +92,11 @@ class Card:
         self.m = [h1, h2, h3]
 
     @property
-    def struct(self):
-        new = []
+    def structure_card(self):
         for i in self.m:
-            # создадим список уникальных рандомных чисел, которые будем выкидывать из карточек
-            for s in xrange(1, 5):
-                # используем рандомный выбор чисел из списков
-                # видимо он иногда повторяется, поэтому выкидывается меньшее количество чисел из карточки
-                r = random.choice(i)
-                if r in new:
-                    continue
-                else:
-                    new.append(r)
-
-            # далее в каждой строчке выбросим все значения из списка рандомных чисел,
-            # заменив их на пробел
-            for j in i:
-                if j in new:
-                    for k in new:
-                        if k == j:
-                            i.insert(i.index(k), ' ')
-                            i.remove(j)
-#        print 'список', new
+            # Необходимо добавить пробелы к спискам
+            for k in xrange(1, 5):
+                i.insert(random.randint(0, len(i)), ' ')
         return self.m
 
 
@@ -144,11 +130,14 @@ class UpdateCard:
                     i.remove(ch)
 
     # метод является ли карточка пустая
-    # не смогла проверить работает ли метод
     def clean_card(self):
-        for i in self.card:
-            if all(number == ' ' for number in i):
-                return True
+        s = 0
+        for stroka in self.card:
+            for i in stroka:
+                if i == ' ':
+                    s += 1
+        if s == 27:
+            return True
 
 
 # Создадим класс Бочонок
@@ -168,11 +157,11 @@ class Lot:
         return self.boch
 
 
-n = Card()
-human = UpdateCard(n.struct, 'Игрок')
+n = CardNewBase()
+human = UpdateCard(n.structure_card, 'Игрок')
 
-m = Card()
-computer = UpdateCard(m.struct, 'Компьютер')
+m = CardNewBase()
+computer = UpdateCard(m.structure_card, 'Компьютер')
 
 nn = Lot()
 while nn.boch:
@@ -182,32 +171,35 @@ while nn.boch:
     nn.remove_lot(l)
     print 'Выпал бочонок номер: ', l
 #    print nn.view_lot
-    r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода из игры нажмите (E):  ')
-    if r_human == 'Y':
-        computer.delete_choise(int(l))
-        if human.find_lot(int(l)):
-            print 'Вы проиграли'
-            break
-        else:
-            if computer.clean_card():
-                print 'Карточка соперника пуста'
-                break
-        continue
-    elif r_human == 'N':
-        print 'Зачеркиваем бочонок номер: ', l
-        computer.delete_choise(int(l))
-        if human.find_lot(int(l)):
-            human.delete_choise(int(l))
-            if human.clean_card():
-                print 'Поздравляем с победой'
-                break
-        else:
-            print 'Вы проиграли'
-            break
-    elif r_human == 'E':
+    if computer.clean_card():
+        print 'Карточка соперника пуста. ВЫ ПРОИГРАЛИ :((.'
+        break
+    elif human.clean_card():
+        print '***ПОЗДРАВЛЯЕМ С ПОБЕДОЙ***'
         break
     else:
-        print 'Выберите Y или N'
+        r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода из игры нажмите (E):  ')
+        # Если пользователь выбрал продолжать
+        if r_human == 'Y':
+            computer.delete_choise(int(l))  # удаляем цифру из карточки соперника
+            # если цифра все таки присутствует в карточке игрока, выходим из цикла
+            if human.find_lot(int(l)):
+                print 'ВЫ ОШИБЛИСЬ И ПРОИГРАЛИ'
+                break
+            continue
+        # Если пользователь выбрал зачеркнуть цифру
+        elif r_human == 'N':
+            print 'Зачеркиваем бочонок номер: ', l
+            computer.delete_choise(int(l))
+            if human.find_lot(int(l)):
+                human.delete_choise(int(l))
+            else:
+                print 'ВЫ ОШИБЛИСЬ И ПРОИГРАЛИ'
+                break
+        elif r_human == 'E':
+            break
+        else:
+            print 'Выберите Y или N'
 else:
     if human.clean_card():
         print 'Поздравляем с победой'
