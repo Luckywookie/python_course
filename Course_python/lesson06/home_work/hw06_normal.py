@@ -21,17 +21,6 @@ class Human(object):
         return self.name + ' ' + self.surname
 
 
-# **************************  Parent  *******************************
-class Parent(object):
-    def __init__(self, name_parent, surname_parent):
-        self.name_parent = name_parent
-        self.surname_parent = surname_parent
-
-    @property
-    def fullname(self):
-        return self.name_parent + ' ' + self.surname_parent
-
-
 # **************************  Student  *******************************
 class Student(Human):
     def __init__(self, name, surname, age, class_number):
@@ -43,8 +32,10 @@ class Student(Human):
         self.parent = mother + ' и ' + father
         return 'Родители:  ' + self.parent
 
+    @property
     def view_class_number(self):
-        print 'Ученик', self.name, self.surname, 'учится в классе', self.class_number
+        return self.class_number
+        #return 'Ученик', self.name, self.surname, 'учится в классе', self.class_number
 
 
 # **************************  Teacher  *******************************
@@ -60,12 +51,29 @@ class Teacher(Human):
 parent1 = Human('Наталья', 'Новикова', 41)
 parent2 = Human('Олег', 'Новиков', 44)
 
-student1 = Student('Андрей', 'Новиков', 12, '5B')
-print student1.has_parent(parent1.view_fullname, parent2.view_fullname)
-student1.view_class_number()
+#print student1.has_parent(parent1.view_fullname, parent2.view_fullname)
 
 teacher1 = Teacher('Olga', 'Ivanova', 31, 'Math')
 print teacher1.teach_class('5B', '6B', '7D')
+
+teachers = [Teacher('Александра', 'Новиков', 45, 'Математика'),
+            Teacher('Нона', 'Беликова', 56, 'Русский'),
+            Teacher('Мария', 'Сосновская', 32, 'ИЗО'),
+            Teacher('Георгий', 'Лопас', 66, 'Труд'),
+            Teacher('Виктория', 'Заповалова', 25, 'Литература'),
+            Teacher('Виктор', 'Всезнайкин', 39, 'История')]
+
+
+students = [Student('Андрей', 'Новиков', 12, '6В'),
+            Student('Алексей', 'Павлов', 14, '8Г'),
+            Student('Нюша', 'Слабая', 11, '5А'),
+            Student('Алена', 'Черных', 11, '5А'),
+            Student('Боня', 'Куцый', 11, '5А'),
+            Student('Ляля', 'Кузнецова', 11, '5В')]
+
+for i in students:
+    if i.view_class_number == '5А':
+        print i.name, i.surname, i.view_class_number
 
 
 # Выбранная и заполненная данными структура должна решать следующие задачи:
