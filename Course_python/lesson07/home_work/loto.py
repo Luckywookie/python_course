@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# from __future__ import unicode_literals
+
+import random
 
 # GitHub проверка
 """Лото
@@ -58,7 +61,6 @@
 модуль random: http://docs.python.org/3/library/random.html
 
 """
-import random
 
 __author__ = 'belykh_olga'
 
@@ -163,7 +165,6 @@ while nn.boch:
     human.view()
     computer.view()
     l = nn.choice_lot
-    nn.remove_lot(l)
     print 'Выпал бочонок номер: ', l
     if computer.clean_card():
         print 'Карточка соперника пуста. ВЫ ПРОИГРАЛИ :((.'
@@ -175,6 +176,7 @@ while nn.boch:
         r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода из игры нажмите (E):  ')
         # Если пользователь выбрал продолжать
         if r_human == 'Y':
+            nn.remove_lot(l)
             computer.delete_choise(int(l))  # удаляем цифру из карточки соперника
             # если цифра все таки присутствует в карточке игрока, выходим из цикла
             if human.find_lot(int(l)):
@@ -183,6 +185,7 @@ while nn.boch:
             continue
         # Если пользователь выбрал зачеркнуть цифру
         elif r_human == 'N':
+            nn.remove_lot(l)
             print 'Зачеркиваем бочонок номер: ', l
             computer.delete_choise(int(l))
             if human.find_lot(int(l)):
@@ -193,6 +196,7 @@ while nn.boch:
         elif r_human == 'E':
             break
         else:
+            # если другая буква, цифра из карточек не удаляется
             print 'Выберите Y или N'
 else:
     if human.clean_card():
@@ -200,4 +204,6 @@ else:
     else:
         print 'что-то пошло не так или Вы вышли из игры'
 
+
+#input("Press Enter")
 
