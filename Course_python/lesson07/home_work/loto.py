@@ -123,7 +123,7 @@ class UpdateCard:
         for i in self.card:
             for j in i:
                 if j == ch:
-                    i.insert(i.index(ch), ' ')
+                    i.insert(i.index(ch), 'X')
                     i.remove(ch)
 
     # метод является ли карточка пустая
@@ -131,9 +131,9 @@ class UpdateCard:
         s = 0
         for stroka in self.card:
             for i in stroka:
-                if i == ' ':
+                if i == 'X':
                     s += 1
-        if s == 27:
+        if s == 15:
             return True
 
 
@@ -166,6 +166,7 @@ while nn.boch:
     computer.view()
     l = nn.choice_lot
     print 'Выпал бочонок номер: ', l
+
     if computer.clean_card():
         print 'Карточка соперника пуста. ВЫ ПРОИГРАЛИ :((.'
         break
@@ -174,10 +175,10 @@ while nn.boch:
         break
     else:
         r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода из игры нажмите (E):  ')
+        computer.delete_choise(int(l))  # удаляем цифру из карточки соперника
         # Если пользователь выбрал продолжать
         if r_human == 'Y':
             nn.remove_lot(l)
-            computer.delete_choise(int(l))  # удаляем цифру из карточки соперника
             # если цифра все таки присутствует в карточке игрока, выходим из цикла
             if human.find_lot(int(l)):
                 print 'ВЫ ОШИБЛИСЬ И ПРОИГРАЛИ'
@@ -187,7 +188,6 @@ while nn.boch:
         elif r_human == 'N':
             nn.remove_lot(l)
             print 'Зачеркиваем бочонок номер: ', l
-            computer.delete_choise(int(l))
             if human.find_lot(int(l)):
                 human.delete_choise(int(l))
             else:
@@ -198,12 +198,5 @@ while nn.boch:
         else:
             # если другая буква, цифра из карточек не удаляется
             print 'Выберите Y или N'
-else:
-    if human.clean_card():
-        print 'Поздравляем с победой'
-    else:
-        print 'что-то пошло не так или Вы вышли из игры'
 
-
-#input("Press Enter")
-
+# input("Press Enter")
