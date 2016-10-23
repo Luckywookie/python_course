@@ -201,4 +201,4 @@ while nn.boch:
             # если другая буква, цифра из карточек не удаляется
             print 'Выберите Y или N'
 
-# input("Press Enter")
+input("Press Enter")
