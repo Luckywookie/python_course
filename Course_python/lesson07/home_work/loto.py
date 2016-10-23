@@ -66,16 +66,12 @@ __author__ = 'belykh_olga'
 
 
 # Необходимо сделать наоборот, сначала цифры 5*3 и добавить пробелы
+# можно сделать список чисел 1-90,
+# а потом сделать random.shuffle() от этого списка
 class CardNewBase:
     def __init__(self):
-        k = []
-        for v in range(1, 100):
-            g = random.randint(1, 90)
-            # если в списке уже присутствует это значение, то перевести опять в начало цикла
-            if g in k:
-                continue
-            else:
-                k.append(g)
+        k = list([_ for _ in xrange(1, 91)])
+        random.shuffle(k)
         # так как в каждой из трех строк не должны повторять значения, создадим сначала единый список
         # а потом разъединим его на три части по 9 штук
         h1 = k[:5]
@@ -91,9 +87,10 @@ class CardNewBase:
     @property
     def structure_card(self):
         for i in self.m:
-            # Необходимо добавить пробелы к спискам
+            # Необходимо добавить пробелы к спискам и перемешать
             for k in xrange(1, 5):
-                i.insert(random.randint(0, len(i)), ' ')
+                i += ' '
+            random.shuffle(i)
         return self.m
 
 
@@ -115,13 +112,16 @@ class UpdateCard:
     # метод поиска цифр на карточке
     def find_lot(self, ch):
         for i in self.card:
-            for j in i:
+            for j in i:   # здесь ведь можно чуть проще:  if j in i:  return True
                 if j == ch:
                     return True
 
     # метод зачеркивания цифр на карточке
     def delete_choise(self, ch):
         for i in self.card:
+            # insert, index, remove - 3 метода
+            # А если  i[i.index(ch)] = ' ' - только 2 метода будут работать
+            # Только для зачеркивания наверно лучше ставить там 'x'
             for j in i:
                 if j == ch:
                     i.insert(i.index(ch), 'X')
@@ -132,7 +132,7 @@ class UpdateCard:
         s = 0
         for stroka in self.card:
             for i in stroka:
-                if i == 'X':
+                if i == 'X':    # покороче:   s += i.count(' ')
                     s += 1
         if s == 15:
             return True
@@ -201,4 +201,4 @@ while nn.boch:
             # если другая буква, цифра из карточек не удаляется
             print 'Выберите Y или N'
 
-input("Press Enter")
+# input("Press Enter")
