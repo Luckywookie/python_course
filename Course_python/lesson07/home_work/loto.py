@@ -102,14 +102,15 @@ class UpdateCard:
         self.card = card
         self.name = name
 
-    def view(self):
+    def __str__(self):
         # выведем получившуюся матрицу чисел
         print '{y:-^30}'.format(y=self.name)
+        s = ''
         for i in self.card:
             for j in i:
-                print '{}'.format(j),
-            print
-        print '{:-^24}'.format('-')
+                s += str(j) + ' '
+            s += '\n'
+        return s + '{:-^24}'.format('-')
 
     # метод поиска цифр на карточке
     def find_lot(self, ch):
@@ -162,8 +163,8 @@ computer = UpdateCard(m.structure_card, 'Компьютер')
 
 nn = Lot()
 while nn.boch:
-    human.view()
-    computer.view()
+    print human
+    print computer
     l = nn.choice_lot
     print 'Выпал бочонок номер: ', l
 
