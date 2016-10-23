@@ -175,9 +175,9 @@ while nn.boch:
         break
     else:
         r_human = raw_input('Выберите продолжать(Y) или зачеркнуть цифру(N), для выхода из игры нажмите (E):  ')
-        computer.delete_choise(int(l))  # удаляем цифру из карточки соперника
         # Если пользователь выбрал продолжать
         if r_human == 'Y':
+            computer.delete_choise(int(l))  # удаляем цифру из карточки соперника
             nn.remove_lot(l)
             # если цифра все таки присутствует в карточке игрока, выходим из цикла
             if human.find_lot(int(l)):
@@ -186,6 +186,7 @@ while nn.boch:
             continue
         # Если пользователь выбрал зачеркнуть цифру
         elif r_human == 'N':
+            computer.delete_choise(int(l))  # удаляем цифру из карточки соперника
             nn.remove_lot(l)
             print 'Зачеркиваем бочонок номер: ', l
             if human.find_lot(int(l)):
